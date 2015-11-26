@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">PopularMovies</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_sortOrderType">Order by</string>
+    <string name="pref_sortOrderTypeKey">pref_sortOrderType</string>
+    <string name="pref_sortOrderTypes_default">popularity.desc</string>
+    <string name="movies_loading_message">Loading movies list...</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="movie_details_title">Movie details</string>
+    <string name="lbl_title">Title</string>
+    <string name="lbl_release_date">Release date</string>
+    <string name="lbl_vote_average">Vote average</string>
+    <string name="lbl_description">Plot summary</string>
+    <string name="api_address">http://api.themoviedb.org/3/discover/movie?</string>
+    <string name="api_key"></string>
 </resources>

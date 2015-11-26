@@ -1,0 +1,86 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:stretchColumns="1">
+
+    <TableRow
+     android:padding="10dip">
+        <TextView
+            android:textSize="15dp"
+            android:layout_weight="0.5"
+            android:text="@string/lbl_title" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:textSize="15dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="0.5"
+            android:width="0dp"/>
+
+    </TableRow>
+        <TableRow
+            android:padding="10dip">
+            <TextView
+                android:textSize="15dp"
+                android:layout_weight="0.5"
+                android:text="@string/lbl_release_date" />
+
+            <TextView
+                android:id="@+id/tvReleaseDate"
+                android:textSize="15dp"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:width="0dp"/>
+        </TableRow>
+        <TableRow
+            android:padding="10dip">
+            <TextView
+                android:textSize="15dp"
+                android:layout_weight="0.5"
+                android:text="@string/lbl_vote_average" />
+
+            <TextView
+                android:id="@+id/tvVoteAverage"
+                android:textSize="15dp"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:width="0dp"/>
+        </TableRow>
+        <TableRow
+            android:padding="10dip">
+            <TextView
+                android:textSize="15dp"
+
+                android:text="@string/lbl_description"
+                android:layout_weight="0.5"/>
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:textSize="15dp"
+                android:layout_width="fill_parent"
+                android:layout_weight="0.5"
+                android:width="0dp"/>
+        </TableRow>
+        <TableRow
+            android:padding="10dip">
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:width="0dp">
+                <ImageView
+                    android:id="@+id/posterImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center|top"/>
+            </FrameLayout>
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>
