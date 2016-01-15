@@ -3,84 +3,155 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
-        android:stretchColumns="1">
+        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
 
-    <TableRow
-     android:padding="10dip">
-        <TextView
-            android:textSize="15dp"
-            android:layout_weight="0.5"
-            android:text="@string/lbl_title" />
+            <ImageView
+                android:id="@+id/posterImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top" />
+        </FrameLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_toLeftOf="@+id/frameLayout"
+            >
 
+            <TableRow
+                android:padding="10dip">
+                <TextView
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"
+                    android:text="@string/lbl_title" />
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:textSize="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="0.5"
+                    />
+            </TableRow>
+            <TableRow
+                android:padding="10dip">
+                <TextView
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"
+                    android:text="@string/lbl_release_date" />
+
+                <TextView
+                    android:id="@+id/tvReleaseDate"
+                    android:textSize="15dp"
+                    android:layout_weight="0.5"
+                    android:width="0dp"/>
+            </TableRow>
+            <TableRow
+                android:padding="10dip">
+                <TextView
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.5"
+                    android:text="@string/lbl_vote_average" />
+
+                <TextView
+                    android:id="@+id/tvVoteAverage"
+                    android:textSize="15dp"
+                    android:layout_weight="0.5"
+                    android:width="0dp"/>
+            </TableRow>
+
+
+
+        </TableLayout>
+
+    </RelativeLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            >
+            <TableRow>
+                <TextView
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:text="@string/lbl_description"
+                    android:layout_weight="0.2"/>
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:textSize="15dp"
+                    android:layout_weight="0.8"
+                    android:width="0dp"/>
+            </TableRow>
+            <TableRow>
+                <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <Button
+                            android:id="@+id/btnAddToFavorites"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_favorite_text"
+                            android:onClick="addMovieToFavorites"
+                            />
+                    </FrameLayout>
+
+            </TableRow>
+        </TableLayout>
         <TextView
-            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="@string/lbl_reviews"
+            android:padding="15dp"
+            android:layout_weight="0.2"/>
+        <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_weight="0.5"
-            android:width="0dp"/>
-
-    </TableRow>
-        <TableRow
-            android:padding="10dip">
-            <TextView
-                android:textSize="15dp"
-                android:layout_weight="0.5"
-                android:text="@string/lbl_release_date" />
+            android:layout_height="150dp"
+            android:padding="15dp">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/reviewsListView"
+                android:fadeScrollbars="false"/>
 
             <TextView
-                android:id="@+id/tvReleaseDate"
-                android:textSize="15dp"
-                android:layout_width="fill_parent"
-                android:layout_weight="0.5"
-                android:width="0dp"/>
-        </TableRow>
-        <TableRow
-            android:padding="10dip">
-            <TextView
-                android:textSize="15dp"
-                android:layout_weight="0.5"
-                android:text="@string/lbl_vote_average" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/loading_reviews_text"
+                android:id="@+id/loadingReviewsTextView"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/btnPlayTrailer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_play_trailer_text"
+                android:onClick="playTrailer"
+                />
+        </FrameLayout>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvVoteAverage"
-                android:textSize="15dp"
-                android:layout_width="fill_parent"
-                android:layout_weight="0.5"
-                android:width="0dp"/>
-        </TableRow>
-        <TableRow
-            android:padding="10dip">
-            <TextView
-                android:textSize="15dp"
-
-                android:text="@string/lbl_description"
-                android:layout_weight="0.5"/>
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:textSize="15dp"
-                android:layout_width="fill_parent"
-                android:layout_weight="0.5"
-                android:width="0dp"/>
-        </TableRow>
-        <TableRow
-            android:padding="10dip">
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_weight="1"
-                android:width="0dp">
-                <ImageView
-                    android:id="@+id/posterImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|top"/>
-            </FrameLayout>
-        </TableRow>
-    </TableLayout>
 
 </ScrollView>

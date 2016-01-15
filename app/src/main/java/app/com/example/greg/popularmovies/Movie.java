@@ -12,13 +12,29 @@ public class Movie implements Parcelable {
     public String PosterPath;
     public String ReleaseDate;
     public String VoteAverage;
+    public byte[] PosterBytes;
+    public int Id;
+    public int dbId;
 
-    public Movie(String title, String overview, String posterPath, String releaseDate, String voteAverage){
+
+    public Movie(int id, String title, String overview, String posterPath, String releaseDate, String voteAverage, byte[] posterBytes, int dId){
+        Id = id;
         Title = title;
         Overview = overview;
         PosterPath = posterPath;
         ReleaseDate = releaseDate;
         VoteAverage = voteAverage;
+        PosterBytes = posterBytes;
+        dbId = dId;
+    }
+    public Movie(int id, String title, String overview, String posterPath, String releaseDate, String voteAverage){
+        Id = id;
+        Title = title;
+        Overview = overview;
+        PosterPath = posterPath;
+        ReleaseDate = releaseDate;
+        VoteAverage = voteAverage;
+        PosterBytes = new byte[0];
     }
 
     protected Movie(Parcel in) {
@@ -27,6 +43,10 @@ public class Movie implements Parcelable {
         PosterPath = in.readString();
         ReleaseDate = in.readString();
         VoteAverage = in.readString();
+        Id = in.readInt();
+        dbId = in.readInt();
+        PosterBytes = new byte[in.readInt()];
+        in.readByteArray(PosterBytes);
     }
 
     @Override
@@ -36,6 +56,10 @@ public class Movie implements Parcelable {
         dest.writeString(PosterPath);
         dest.writeString(ReleaseDate);
         dest.writeString(VoteAverage);
+        dest.writeInt(Id);
+        dest.writeInt(dbId);
+        dest.writeInt(PosterBytes.length);
+        dest.writeByteArray(PosterBytes);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package app.com.example.greg.popularmovies;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
@@ -17,6 +18,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import app.com.example.greg.popularmovies.data.PopularMoviesContract;
+
 /**
  * Created by Greg on 18-11-2015.
  */
@@ -26,20 +29,28 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
     private View moviesGrid;
     private MoviesAdapter moviesAdapter;
     private ArrayList<Movie> movies;
-    private String orderBy;
+    private String sortCriteria;
     private Context mContext;
+    private Boolean loadFromDb;
 
-    DownloadMovieListTask(View loadingMoviesTextView, View moviesGrid, MoviesAdapter moviesAdapter,    ArrayList<Movie> movies, String orderBy, Context context){
+    DownloadMovieListTask(View loadingMoviesTextView, View moviesGrid, MoviesAdapter moviesAdapter,    ArrayList<Movie> movies, String sortCriteria, Context context){
         this.loadingMoviesTextView = loadingMoviesTextView;
         this.moviesGrid = moviesGrid;
         this.moviesAdapter = moviesAdapter;
         this.movies = movies;
-        this.orderBy = orderBy;
+        this.sortCriteria = sortCriteria;
         this.mContext = context;
+        this.loadFromDb = sortCriteria.equals("favorites");
     }
+    
+    
     @Override
     protected ArrayList<Movie> doInBackground(Void... params) {
-        loadMovies();
+        if(this.loadFromDb == true){
+            loadMoviesFromDb();
+        }else {
+            loadMoviesFromInternet();
+        }
         return movies;
     }
     @Override
@@ -48,7 +59,32 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
         moviesGrid.setVisibility(View.VISIBLE);
         moviesAdapter.notifyDataSetChanged();
     }
-    private ArrayList<Movie> loadMovies(){
+    private void loadMoviesFromDb() {
+        Cursor cursor = mContext.getContentResolver().query(
+                PopularMoviesContract.MovieEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        cursor.moveToFirst();
+        movies.clear();
+        while (cursor.isAfterLast() == false){
+            int id = cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_MOVIE_ID));
+            String title = cursor.getString(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_TITLE));
+            String overview = cursor.getString(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_OVERVIEW));
+            String posterPath = cursor.getString(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_POSTER_PATH));
+            String releaseDate = cursor.getString(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_RELEASE_DATE));
+            String voteAverage = String.valueOf(cursor.getFloat(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE)));
+            byte[] posterBytes = cursor.getBlob(cursor.getColumnIndex(PopularMoviesContract.MovieEntry.COLUMN_POSTER));
+            int dbId = cursor.getInt(cursor.getColumnIndex(PopularMoviesContract.MovieEntry._ID));
+            Movie mov = new Movie(id, title,overview,posterPath, releaseDate, voteAverage, posterBytes, dbId);
+            movies.add(mov);
+            cursor.moveToNext();
+        }
+        cursor.close();
+    }
+    private ArrayList<Movie> loadMoviesFromInternet(){
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String forecastJsonStr = null;
@@ -59,7 +95,7 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
             final String API_KEY_PARAM = "api_key";
 
             Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                    .appendQueryParameter(SORT_BY_PARAM, orderBy)
+                    .appendQueryParameter(SORT_BY_PARAM, sortCriteria)
                     .appendQueryParameter(API_KEY_PARAM, mContext.getString(R.string.api_key))
                     .build();
 
@@ -90,8 +126,8 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
                 return null;
             }
             forecastJsonStr = buffer.toString();
-
-            return extractMovieData(forecastJsonStr);
+            extractMovieData(forecastJsonStr);
+            return movies;
         } catch (IOException e) {
 
             return null;
@@ -108,7 +144,7 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
         }
 
     }
-    private ArrayList<Movie> extractMovieData(String json){
+    private void extractMovieData(String json){
         movies.clear();
         try {
             JSONObject jObject = new JSONObject(json);
@@ -117,13 +153,14 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
             {
                 try {
                     JSONObject oneObject = jArray.getJSONObject(i);
+                    int id = oneObject.getInt("id");
                     String title = oneObject.getString("original_title");
                     String overview = oneObject.getString("overview");
                     String posterPath = oneObject.getString("poster_path");
                     String releaseDate = oneObject.getString("release_date");
                     String voteAverage = oneObject.getString("vote_average");
 
-                    Movie mov = new Movie(title,overview,posterPath, releaseDate, voteAverage);
+                    Movie mov = new Movie(id, title,overview,posterPath, releaseDate, voteAverage);
                     movies.add(mov);
                 } catch (JSONException e) {
 
@@ -132,6 +169,5 @@ public class DownloadMovieListTask extends AsyncTask<Void, Void, ArrayList<Movie
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return movies;
     }
 }

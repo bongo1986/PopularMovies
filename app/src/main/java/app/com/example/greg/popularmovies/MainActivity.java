@@ -65,9 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMovies(){
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String orderBy = sharedPref.getString(getString(R.string.pref_sortOrderTypeKey), "");
+        String sortCriteria = sharedPref.getString(getString(R.string.pref_sortOrderTypeKey), "");
 
-        DownloadMovieListTask task = new DownloadMovieListTask(loadingMoviesTextView, moviesGrid, moviesAdapter, movies, orderBy, this);
+        DownloadMovieListTask task = new DownloadMovieListTask(loadingMoviesTextView, moviesGrid, moviesAdapter, movies, sortCriteria, this);
         task.execute();
+
     }
 }

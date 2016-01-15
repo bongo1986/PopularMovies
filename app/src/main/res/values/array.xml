@@ -3,9 +3,11 @@
     <string-array name="pref_sortOrderTypes_entries">
         <item>Popularity</item>
         <item>Rating</item>
+        <item>Favorites</item>
     </string-array>
     <string-array name="pref_sortOrderTypes_values">
         <item>popularity.desc</item>
         <item>vote_average.desc</item>
+        <item>favorites</item>
     </string-array>
 </resources>

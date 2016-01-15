@@ -28,6 +28,9 @@
             android:label="@string/movie_details_title"
             android:parentActivityName=".MainActivity" >
         </activity>
+        <provider
+            android:authorities="com.example.greg.popularmovies"
+            android:name=".data.PopularMoviesProvider" />
     </application>
 
 </manifest>

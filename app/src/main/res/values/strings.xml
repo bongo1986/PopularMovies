@@ -11,6 +11,12 @@
     <string name="lbl_release_date">Release date</string>
     <string name="lbl_vote_average">Vote average</string>
     <string name="lbl_description">Plot summary</string>
+    <string name="lbl_reviews">Reviews</string>
     <string name="api_address">http://api.themoviedb.org/3/discover/movie?</string>
-    <string name="api_key"></string>
+    <string name="api_reviews_address">http://api.themoviedb.org/3/movie/%d/reviews?</string>
+    <string name="btn_favorite_text">Add to favourites</string>
+    <string name="loading_reviews_text">Loading reviews..</string>
+    <string name="added_to_favorites_msg">Added to favorites</string>
+    <string name="btn_play_trailer_text">Play trailer</string>
+    <string name="api_key">f135d7e7a8fb0ec7757abb6917f01fbb</string>
 </resources>

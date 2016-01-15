@@ -3,6 +3,8 @@ package app.com.example.greg.popularmovies;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, MovieDetails.class);
                     MovieImageViewHolder currentHolder = (MovieImageViewHolder)v.getTag();
-                    i.putExtra("app.com.example.greg.popularmovies.Movie", currentHolder.CurrentMovie);
+                    i.putExtra("app.com.example.greg.popularmovies.MovieEntry", currentHolder.CurrentMovie);
                     mContext.startActivity(i);
                 }
             });
@@ -50,10 +52,16 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             holder = (MovieImageViewHolder) row.getTag();
         }
         holder.CurrentMovie = m;
-        Picasso
-                .with(mContext)
-                .load("http://image.tmdb.org/t/p/w185/" + m.PosterPath)
-                .into(holder.CurrentImageView);
+        if(m.PosterBytes.length > 0){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(m.PosterBytes, 0, m.PosterBytes.length);
+            holder.CurrentImageView.setImageBitmap(bitmap);
+        }
+        else {
+            Picasso
+                    .with(mContext)
+                    .load("http://image.tmdb.org/t/p/w185/" + m.PosterPath)
+                    .into(holder.CurrentImageView);
+        }
         return row;
     }
 }
