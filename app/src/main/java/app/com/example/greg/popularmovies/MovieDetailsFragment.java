@@ -182,6 +182,9 @@ public class MovieDetailsFragment extends Fragment  {
         if(count > 0) {
             btnAddToFavorites.setVisibility(View.INVISIBLE);
         }
+        else {
+            btnAddToFavorites.setVisibility(View.VISIBLE);
+        }
     }
 
 
