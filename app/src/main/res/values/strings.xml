@@ -20,7 +20,7 @@
     <string name="loading_trailers_text">Loading trailers..</string>
     <string name="added_to_favorites_msg">Added to favorites</string>
     <string name="btn_play_trailer_text">Play trailer</string>
-    <string name="api_key">f135d7e7a8fb0ec7757abb6917f01fbb</string>
+    <string name="api_key"></string>
     <string name="share_trailer">Shere first trailer</string>
     <string name="share_trailer_phone">Shere</string>
 </resources>
