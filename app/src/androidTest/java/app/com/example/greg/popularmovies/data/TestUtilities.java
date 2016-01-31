@@ -29,6 +29,19 @@ public class TestUtilities extends AndroidTestCase {
         ContentValues[] arr = new ContentValues[reviews.size()];
         return reviews.toArray(arr);
     }
+    static ContentValues[] createTrailerValues(long movieRowId){
+        ArrayList<ContentValues> reviews = new ArrayList<ContentValues>();
+        for(int i = 0; i < 5; i++){
+            ContentValues values = new ContentValues();
+            values.put(PopularMoviesContract.TrailerEntry.COLUMN_KEY, "aaaaTestKey");
+            values.put(PopularMoviesContract.TrailerEntry.COLUMN_NAME, "testName");
+            values.put(PopularMoviesContract.TrailerEntry.COLUMN_MOVIE_KEY, movieRowId);
+            reviews.add(values);
+        }
+        ContentValues[] arr = new ContentValues[reviews.size()];
+        return reviews.toArray(arr);
+    }
+
     static ContentValues createMovieValues() {
         ContentValues movieValues = new ContentValues();
         movieValues.put(PopularMoviesContract.MovieEntry.COLUMN_OVERVIEW, "overview of the movie");

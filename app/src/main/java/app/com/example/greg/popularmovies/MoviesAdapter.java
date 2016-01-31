@@ -2,7 +2,6 @@ package app.com.example.greg.popularmovies;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -22,11 +21,13 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
     private Context mContext;
     private ArrayList<Movie> mGridData;
+    private OnMovieSelectedListener mOnMovieSelectedListener;
 
-    public MoviesAdapter(Context context, ArrayList<Movie> movieList) {
+    public MoviesAdapter(Context context, ArrayList<Movie> movieList,  OnMovieSelectedListener litener) {
         super(context, 0, movieList);
         mGridData = movieList;
         mContext = context;
+        mOnMovieSelectedListener = litener;
     }
 
     @Override
@@ -40,10 +41,8 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             ImageView iv = (ImageView) row.findViewById(R.id.gridCellImageView);
             iv.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, MovieDetails.class);
                     MovieImageViewHolder currentHolder = (MovieImageViewHolder)v.getTag();
-                    i.putExtra("app.com.example.greg.popularmovies.MovieEntry", currentHolder.CurrentMovie);
-                    mContext.startActivity(i);
+                    mOnMovieSelectedListener.MovieSelected(currentHolder.CurrentMovie);
                 }
             });
             holder = new MovieImageViewHolder(iv, m);
@@ -52,7 +51,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             holder = (MovieImageViewHolder) row.getTag();
         }
         holder.CurrentMovie = m;
-        if(m.PosterBytes.length > 0){
+        if(m.PosterBytes != null && m.PosterBytes.length > 0){
             Bitmap bitmap = BitmapFactory.decodeByteArray(m.PosterBytes, 0, m.PosterBytes.length);
             holder.CurrentImageView.setImageBitmap(bitmap);
         }

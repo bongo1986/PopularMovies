@@ -19,6 +19,7 @@ public class PopularMoviesProvider extends ContentProvider {
     private static final int FAVORITE_MOVIE_BY_ID = 200;
 
     private static final int REVIEWS = 300;
+    private static final int TRAILERS = 400;
 
     private static UriMatcher buildUriMatcher() {
 
@@ -29,6 +30,7 @@ public class PopularMoviesProvider extends ContentProvider {
         matcher.addURI(authority, PopularMoviesContract.PATH_FAVORITE_MOVIES + "/*", FAVORITE_MOVIE_BY_ID);
 
         matcher.addURI(authority, PopularMoviesContract.PATH_REVIEWS, REVIEWS);
+        matcher.addURI(authority, PopularMoviesContract.PATH_TRAILERS, TRAILERS);
 
         return matcher;
     }
@@ -68,6 +70,19 @@ public class PopularMoviesProvider extends ContentProvider {
             {
                 retCursor = mPopularMoviesHelper.getReadableDatabase().query(
                         PopularMoviesContract.ReviewEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case TRAILERS:
+            {
+                retCursor = mPopularMoviesHelper.getReadableDatabase().query(
+                        PopularMoviesContract.TrailerEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -145,6 +160,10 @@ public class PopularMoviesProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         PopularMoviesContract.ReviewEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case TRAILERS:
+                rowsDeleted = db.delete(
+                        PopularMoviesContract.TrailerEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -184,13 +203,29 @@ public class PopularMoviesProvider extends ContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = mPopularMoviesHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+        int returnCount = 0;
         switch (match) {
             case REVIEWS:
                 db.beginTransaction();
-                int returnCount = 0;
+
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(PopularMoviesContract.ReviewEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case TRAILERS:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(PopularMoviesContract.TrailerEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

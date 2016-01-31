@@ -27,6 +27,12 @@ public class TestProvider extends AndroidTestCase {
                 null
         );
 
+        mContext.getContentResolver().delete(
+                PopularMoviesContract.TrailerEntry.CONTENT_URI,
+                null,
+                null
+        );
+
 
         Cursor cursor = mContext.getContentResolver().query(
                 PopularMoviesContract.MovieEntry.CONTENT_URI,
@@ -42,10 +48,19 @@ public class TestProvider extends AndroidTestCase {
                 null,
                 null
         );
+        Cursor cursor3 = mContext.getContentResolver().query(
+                PopularMoviesContract.TrailerEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
         assertEquals("Error: Records not deleted from Favorite Movies table during delete", 0, cursor.getCount());
         assertEquals("Error: Records not deleted from Reviews table during delete", 0, cursor2.getCount());
+        assertEquals("Error: Trailers not deleted from Trailers table during delete", 0, cursor3.getCount());
         cursor.close();
         cursor2.close();
+        cursor3.close();
     }
     @Override
     protected void setUp() throws Exception {
@@ -168,10 +183,6 @@ public class TestProvider extends AndroidTestCase {
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
 
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
-        // the round trip.
-
-        // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
                 PopularMoviesContract.MovieEntry.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
@@ -190,6 +201,31 @@ public class TestProvider extends AndroidTestCase {
         Uri movieUri = mContext.getContentResolver().insert(PopularMoviesContract.MovieEntry.CONTENT_URI, testValues);
         long movieRowId = ContentUris.parseId(movieUri);
         int insertedCount =  mContext.getContentResolver().bulkInsert(PopularMoviesContract.ReviewEntry.CONTENT_URI, TestUtilities.createReviewValues(movieRowId));
+        assertEquals(insertedCount, 5);
+    }
+    public void testTrailersBulkInsert() {
+        ContentValues testValues = TestUtilities.createMovieValues();
+        Uri movieUri = mContext.getContentResolver().insert(PopularMoviesContract.MovieEntry.CONTENT_URI, testValues);
+        long movieRowId = ContentUris.parseId(movieUri);
+        int insertedCount =  mContext.getContentResolver().bulkInsert(PopularMoviesContract.TrailerEntry.CONTENT_URI, TestUtilities.createTrailerValues(movieRowId));
         assertEquals(insertedCount,5);
+    }
+    public void testTrailersSelect() {
+        ContentValues testValues = TestUtilities.createMovieValues();
+        Uri movieUri = mContext.getContentResolver().insert(PopularMoviesContract.MovieEntry.CONTENT_URI, testValues);
+        long movieRowId = ContentUris.parseId(movieUri);
+        int insertedCount =  mContext.getContentResolver().bulkInsert(PopularMoviesContract.TrailerEntry.CONTENT_URI, TestUtilities.createTrailerValues(movieRowId));
+
+        Cursor cursor = mContext.getContentResolver().query(
+                PopularMoviesContract.TrailerEntry.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null  // sort order
+        );
+
+        assertEquals(cursor.getCount(), 5);
+
+
     }
 }

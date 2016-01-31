@@ -16,6 +16,7 @@ public class PopularMoviesContract {
 
     public static final String PATH_FAVORITE_MOVIES = "favoritemovies";
     public static final String PATH_REVIEWS = "reviews";
+    public static final String PATH_TRAILERS = "trailers";
 
 
     public static final class MovieEntry implements BaseColumns {
@@ -64,5 +65,19 @@ public class PopularMoviesContract {
         public static final String COLUMN_MOVIE_KEY = "movie_foreign_key";
 
     }
+    public static final class TrailerEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRAILERS ).build();
 
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILERS ;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILERS ;
+
+        public static final String TABLE_NAME = "movieTrailer";
+
+        public static final String COLUMN_KEY = "key";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_MOVIE_KEY = "movie_foreign_key";
+    }
 }

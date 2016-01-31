@@ -3,6 +3,8 @@ package app.com.example.greg.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Greg on 17-11-2015.
  */
@@ -13,6 +15,8 @@ public class Movie implements Parcelable {
     public String ReleaseDate;
     public String VoteAverage;
     public byte[] PosterBytes;
+    public ArrayList<MovieTrailer> MovieTrailers;
+    public ArrayList<Review> Reviews;
     public int Id;
     public int dbId;
 
